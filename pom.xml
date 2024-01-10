@@ -134,9 +134,9 @@
                         <id>default-cli</id>
                         <configuration>
                             <mainClass>comsci.cs_coffeeshop/comsci.cs_coffeeshop.CoffeeShop</mainClass>
-                            <launcher>app</launcher>
-                            <jlinkZipName>app</jlinkZipName>
-                            <jlinkImageName>app</jlinkImageName>
+                            <launcher>VxCoffeeShop</launcher>
+                            <jlinkZipName>VxCoffeeShop</jlinkZipName>
+                            <jlinkImageName>VxCoffeeShop</jlinkImageName>
                             <noManPages>true</noManPages>
                             <stripDebug>true</stripDebug>
                             <noHeaderFiles>true</noHeaderFiles>
