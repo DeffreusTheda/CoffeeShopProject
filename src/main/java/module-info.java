@@ -10,6 +10,7 @@ module comsci.cs_coffeeshop {
     requires org.kordamp.bootstrapfx.core;
     requires eu.hansolo.tilesfx;
     requires com.almasb.fxgl.all;
+    requires java.sql;
 
     opens comsci.cs_coffeeshop to javafx.fxml;
     exports comsci.cs_coffeeshop;
