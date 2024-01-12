@@ -1,22 +1,47 @@
+/********************************************************************************
+ * Copyright (c) 2024 Deffreus Theda
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ *******************************************************************************/
+
 package comsci.cs_coffeeshop;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 
 import java.util.Arrays;
 
 public class Controller {
     @FXML
-    private TextField c1, c2, c3, c4, c5, c6;
+    static protected Label lWelcome;
+    private final int[] orders = {0, 0, 0, 0, 0, 0};
+    private final Alert struck = new Alert(Alert.AlertType.INFORMATION);
     @FXML
-    private Label warning;
+    private TextField c1, c2, c3, c4, c5, c6, tfUsername, tfPassword;
     @FXML
-    private int[] orders = {0, 0, 0, 0, 0, 0};
+    private PasswordField pfPassword;
+    @FXML
+    private Label warning, lWarning;
     private final String[] menus = {"Espresso", "Americano", "Macciato", "Latte", "Cappucino", "Mochaccino"};
     private final double[] prices = {35.0, 35.0, 40.0, 40.0, 35.0, 35.0};
-    private Alert struck = new Alert(Alert.AlertType.INFORMATION);
+    @FXML
+    private CheckBox cbToggleShowPassword;
 
     @FXML
     protected void purchase() {
@@ -179,5 +204,44 @@ public class Controller {
     @FXML
     protected void update6() {
         orders[5] = Integer.parseInt(c6.getText());
+    }
+
+    // Login Page
+    @FXML
+    protected void signIn() {
+        String username = tfUsername.getText();
+        String password = pfPassword.getText();
+        if (username.isEmpty() && password.isEmpty()) {
+            lWarning.setText("Login successful!");
+            CoffeeShop.loginUser("Anonymous", "");
+            return;
+        }
+        for (int i = 0; i < CoffeeShop.account[0].length; i++) {
+            if (username.equals(CoffeeShop.account[0][i]) && password.equals(CoffeeShop.account[1][i])) {
+                lWarning.setText("Login successful!");
+                CoffeeShop.loginUser(username, password);
+                return;
+            }
+        }
+        lWarning.setText("Incorrect username or password.");
+    }
+
+    @FXML
+    protected void signUp() {
+        lWarning.setText("Login successful!");
+        CoffeeShop.loginUser(tfUsername.getText(), pfPassword.getText());
+    }
+
+    @FXML
+    protected void toggleShowPassword() {
+        if (cbToggleShowPassword.isSelected()) {
+            tfPassword.setText(pfPassword.getText());
+            pfPassword.setVisible(false);
+            tfPassword.setVisible(true);
+        } else {
+            pfPassword.setText(tfPassword.getText());
+            tfPassword.setVisible(false);
+            pfPassword.setVisible(true);
+        }
     }
 }
