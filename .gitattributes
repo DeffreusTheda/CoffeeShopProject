@@ -1,0 +1,2 @@
+target/VxCoffeeShop/lib/modules filter=lfs diff=lfs merge=lfs -text
+target/VxCoffeeShop.zip filter=lfs diff=lfs merge=lfs -text
