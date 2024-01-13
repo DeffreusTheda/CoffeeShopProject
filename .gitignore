@@ -1,14 +1,13 @@
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
-.gitignore
-mvnw
-mvnw.cmd
-target/
+.gitattributes
+mvnw*
+.mvn/
 
 ### IntelliJ IDEA ###
+target/
 .idea/
-.mvn/
 *.iws
 *.iml
 *.ipr
