@@ -5,6 +5,7 @@
 ### IntelliJ IDEA ###
 target/
 .idea/
+.mvn/
 *.iws
 *.iml
 *.ipr
@@ -35,3 +36,5 @@ build/
 .DS_Store
 
 .gitignore
+mvnw
+mvnw.cmd
