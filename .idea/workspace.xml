@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ArtifactsWorkspaceSettings">
+    <artifacts-to-build>
+      <artifact name="CS_CoffeeShop:jar" />
+    </artifacts-to-build>
+  </component>
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="fb2ab454-8c7b-4082-a9de-ee8f26a5e12b" name="Changes" comment="updated version">
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/discord.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/uiDesigner.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="FxmlFile" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="PREVIOUS_COMMIT_AUTHORS">
+      <list>
+        <option value="DeffreusTheda &lt;d3ffr3u5@proton.me&gt;" />
+        <option value="Deffreus Theda &lt;d3ffr3u5@proton.me&gt;" />
+      </list>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="SIGN_OFF_COMMIT" value="true" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;DeffreusTheda&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">
+    <option name="selectedUrlAndAccountId">
+      <UrlAndAccount>
+        <option name="accountId" value="b8a45558-dbab-4604-96c6-894e6ea981c5" />
+        <option name="url" value="https://github.com/DeffreusTheda/CoffeeShopProject" />
+      </UrlAndAccount>
+    </option>
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="mavenHome" value="Use Maven wrapper" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 8
+}</component>
+  <component name="ProjectId" id="2ahf29YEc4VWvOTCJQNimbt4aoN" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_MARK_IGNORED_FILES_AS_EXCLUDED": "true",
+    "Application.CoffeeShop.executor": "Run",
+    "Application.Launcher.executor": "Run",
+    "Application.LoginPage.executor": "Run",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "next",
+    "kotlin-language-version-configured": "true",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "preferences.lookFeel",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RunManager">
+    <configuration name="CoffeeShop" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="comsci.cs_coffeeshop.CoffeeShop" />
+      <module name="CS_CoffeeShop" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="comsci.cs_coffeeshop.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.CoffeeShop" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="jdk-21.0.1-openjdk-21.0.1-249ae16d76d6-69315bf7" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="fb2ab454-8c7b-4082-a9de-ee8f26a5e12b" name="Changes" comment="" />
+      <created>1704775521378</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1704775521378</updated>
+      <workItem from="1704775522482" duration="5064000" />
+      <workItem from="1704787669457" duration="1453000" />
+      <workItem from="1704792956168" duration="4890000" />
+      <workItem from="1704844890668" duration="5193000" />
+      <workItem from="1704851219337" duration="12995000" />
+      <workItem from="1704876983492" duration="1594000" />
+      <workItem from="1704882543779" duration="2894000" />
+      <workItem from="1704926150962" duration="5000" />
+      <workItem from="1704935009536" duration="5290000" />
+      <workItem from="1704944933366" duration="1519000" />
+      <workItem from="1704949839773" duration="3145000" />
+      <workItem from="1704959853974" duration="5181000" />
+      <workItem from="1704980784971" duration="804000" />
+      <workItem from="1704986977243" duration="2059000" />
+      <workItem from="1705014494809" duration="1148000" />
+      <workItem from="1705033332163" duration="2639000" />
+      <workItem from="1705068863022" duration="5686000" />
+      <workItem from="1705075323102" duration="9699000" />
+      <workItem from="1705136286921" duration="343000" />
+    </task>
+    <task id="LOCAL-00001" summary="allow target/">
+      <option name="closed" value="true" />
+      <created>1704877070775</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1704877070775</updated>
+    </task>
+    <task id="LOCAL-00002" summary="add login page">
+      <option name="closed" value="true" />
+      <created>1705019009317</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1705019009317</updated>
+    </task>
+    <task id="LOCAL-00003" summary="rm `target/`">
+      <option name="closed" value="true" />
+      <created>1705072572713</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1705072572713</updated>
+    </task>
+    <task id="LOCAL-00004" summary="&gt;&gt; `target/`">
+      <option name="closed" value="true" />
+      <created>1705073360732</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1705073360732</updated>
+    </task>
+    <task id="LOCAL-00005" summary="&gt;&gt; `target/`">
+      <option name="closed" value="true" />
+      <created>1705073711022</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1705073711022</updated>
+    </task>
+    <task id="LOCAL-00006" summary="cleans dump">
+      <option name="closed" value="true" />
+      <created>1705074619764</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1705074619764</updated>
+    </task>
+    <task id="LOCAL-00007" summary="&gt; .gitattributes">
+      <option name="closed" value="true" />
+      <created>1705099299036</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1705099299036</updated>
+    </task>
+    <task id="LOCAL-00008" summary="&gt;&gt; target/ .idea/ .gitignore">
+      <option name="closed" value="true" />
+      <created>1705099478872</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1705099478872</updated>
+    </task>
+    <task id="LOCAL-00009" summary="updated version">
+      <option name="closed" value="true" />
+      <created>1705099838746</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1705099838746</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
+    <option name="CHECK_NEW_TODO" value="false" />
+    <MESSAGE value="allow target/" />
+    <MESSAGE value="add login page" />
+    <MESSAGE value="rm `target/`" />
+    <MESSAGE value="&gt;&gt; `target/`" />
+    <MESSAGE value="cleans dump" />
+    <MESSAGE value="&gt; .gitattributes" />
+    <MESSAGE value="&gt;&gt; target/ .idea/ .gitignore" />
+    <MESSAGE value="updated version" />
+    <option name="LAST_COMMIT_MESSAGE" value="updated version" />
+    <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <breakpoint enabled="true" type="java-exception">
+          <properties class="java.lang.IllegalArgumentException" package="java.lang" />
+          <option name="timeStamp" value="1" />
+        </breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>
