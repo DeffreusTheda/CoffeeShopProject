@@ -3,6 +3,7 @@
 !**/src/test/**/target/
 .gitattributes
 mvnw*
+.mvn/
 
 ### IntelliJ IDEA ###
 target/
