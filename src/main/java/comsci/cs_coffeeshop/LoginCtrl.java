@@ -26,23 +26,28 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import lombok.Setter;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Objects;
 
 public class LoginCtrl {
-    private CoffeeShop coffeeShop;
-    protected void setCoffeeShop(CoffeeShop cs) {
-       coffeeShop = Objects.requireNonNull(cs);
-    }
+    @Setter private CoffeeShop coffeeShop;
     // LOGIN PAGE
     @FXML @Setter private ImageView ivLogo;
     @FXML private TextField tfUsername, tfPassword;
+    protected void setTfUsernameText(String string) {
+        this.tfUsername.setText(string);
+    }
+    protected void setTPfPasswordText(String string) {
+        this.pfPassword.setText(string);
+        this.tfUsername.setText(string);
+    }
     @FXML private PasswordField pfPassword;
     @FXML private CheckBox cbToggleShowPassword;
+    protected void setCbToggleShowPasswordSelected(boolean selected) {
+        this.cbToggleShowPassword.setSelected(selected);
+    }
     @FXML private Label lWarning;
     protected void setLWarningText(String message) {
         this.lWarning.setText(message);
@@ -50,30 +55,38 @@ public class LoginCtrl {
     @FXML private void signIn() throws SQLException {
         String username = tfUsername.getText(), password = pfPassword.getText();
         if (username.isEmpty() || password.isEmpty()) {
-            lWarning.setText("Please fill your username and password first");
+            setLWarningText("Please fill your username and password first");
             return;
         }
-        lWarning.setText("");
-        Connection con = coffeeShop.connectToDB();
-        String loginQuery = "SELECT FROM users WHERE username = ? AND password = ?";
-        PreparedStatement psLogin = Objects.requireNonNull(con).prepareStatement(loginQuery);
+        setLWarningText("");
+        Connection con = this.coffeeShop.connectToDB();
+        if (con == null) {
+            this.coffeeShop.showConnectionAlert();
+            return;
+        }
+        String loginQuery = "SELECT * FROM users WHERE username = ? AND password = ?;";
+        PreparedStatement psLogin = con.prepareStatement(loginQuery);
         psLogin.setString(1, username);
         psLogin.setString(2, password);
         ResultSet rsLogin = psLogin.executeQuery();
         if (rsLogin.next()) {
-            coffeeShop.loginUser(username, password);
+            this.coffeeShop.loginUser(username, password);
             return;
         }
-        lWarning.setText("Invalid login credentials");
+        setLWarningText("Invalid login credentials");
     }
-    @FXML private void signUp() {
+    @FXML private void signUp() throws SQLException, InterruptedException {
         if (tfUsername.getText().isEmpty() || pfPassword.getText().isEmpty()) {
-            lWarning.setText("Please fill your name and password.");
+            setLWarningText("Please fill your name and password.");
             return;
         }
-        lWarning.setText("");
-        Connection con = coffeeShop.connectToDB();
-        coffeeShop.registerUser(tfUsername.getText(), pfPassword.getText(), con);
+        if (pfPassword.getText().length() < 8) {
+            setLWarningText("Password must be at least 8 characters long");
+            return;
+        }
+        setLWarningText("");
+        Connection con = this.coffeeShop.connectToDB();
+        this.coffeeShop.registerUser(tfUsername.getText(), pfPassword.getText(), con);
     }
     @FXML private void toggleShowPassword() {
         if (cbToggleShowPassword.isSelected()) {

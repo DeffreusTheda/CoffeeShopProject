@@ -39,15 +39,15 @@ import javafx.scene.text.Font;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Optional;
-
 import lombok.Getter;
 import lombok.Setter;
 
 public class ShopCtrl {
-    private class Item {
-        @Setter @Getter private String name;
-        @Setter @Getter private double price, total;
-        @Setter @Getter private int quantity;
+    @Setter private CoffeeShop coffeeShop;
+    @Setter @Getter private class Item {
+        private String name;
+        private double price, total;
+        private int quantity;
 
         public Item(String testname, String testprice, String testQTY, String testtotal) {
             this.name = testname;
@@ -56,16 +56,19 @@ public class ShopCtrl {
             this.total = Double.parseDouble(testtotal);
         }
     }
-    @Setter private CoffeeShop coffeeShop;
     // CAFE MENU
     @FXML private Label lWelcome;
     protected void setLWelcomeText(String message) {
         this.lWelcome.setText(message);
     }
-    /* Safely Editable Start Here */
+
+    /* Editable Start Here */
+    // Make sure the FlowPane is injected by the corresponding .fxml file (shop.fxml)
     @FXML private FlowPane fpFoods, fpDrinks;
+    // Edit the initial capacity accordingly when add/removing category
     @FXML private final ArrayList<FlowPane> fps = new ArrayList<>(2);
-    /* Safely Editable End Here */
+    /* Editable End Here */
+
     // METADATA
     @FXML private TableView<Item> tvCart;
     @FXML private TableColumn<Item, String> itemName, itemPrice, itemTotal, itemQuantity;
@@ -79,7 +82,9 @@ public class ShopCtrl {
     private double sumOfPurchase = 0;
     @FXML private void initialize(CoffeeShop coffeeShop) {
         this.fps.add(this.fpFoods); this.fps.add(this.fpDrinks);
-        for (int i = 0; i < this.fps.size(); ++i) this.populateItems(this.fps.get(i), this.coffeeShop.getCategories()[i]);
+        for (int i = 0; i < this.fps.size(); ++i) {
+            this.populateItems(this.fps.get(i), this.coffeeShop.getCategories()[i]);
+        }
     }
     private ObservableList<Item> getItems() {
         ObservableList<Item> items = FXCollections.observableArrayList();

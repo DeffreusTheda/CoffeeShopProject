@@ -22,26 +22,20 @@
 
 package comsci.cs_coffeeshop;
 
-import com.almasb.fxgl.trade.Shop;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
+import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import java.io.IOException;
 import java.sql.*;
-import java.util.Objects;
 
 public class CoffeeShop extends Application {
     private ShopCtrl shopCtrl;
     private LoginCtrl loginCtrl;
-    public CoffeeShop() {
-        this.shopCtrl = new ShopCtrl();
-        this.loginCtrl = new LoginCtrl();
-        this.loginCtrl.setCoffeeShop(this);
-    }
     // Safely Editable Start Here
     private final String[][] foods = {
 //            {"Item Name", "Price in Rp", "Path to Image File"},
@@ -67,10 +61,25 @@ public class CoffeeShop extends Application {
     // Safely Editable End Here
     protected String[] identity = {"", ""};
     private Stage primaryStage;
-    private Scene loginStage, shopScene;
+    private Scene loginScene, shopScene;
+    protected void showConnectionAlert() {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setResizable(false);
+        alert.setTitle("Sorry for the inconvenience");
+        alert.setHeaderText("Failed to connect to product database");
+        alert.setContentText("Please try again later\nPossible causes:" +
+                "\n- Database server is down\n- Internet connection problem");
+        Image iLogo = new Image(getClass().getResourceAsStream("images/logo.png"));
+        ImageView ivLogo = new ImageView(iLogo);
+        ivLogo.setFitHeight(50.0f);
+        ivLogo.setFitWidth(50.0f);
+        alert.setGraphic(ivLogo);
+        alert.showAndWait();
+    }
     protected Connection connectToDB() {
         Connection con;
-        String dbName = "VxCoffeeShop", dbUser = "root", dbPass = "", url = "jdbc:mysql://localhost/" + dbName;
+        String dbName = "VxCoffeeShop", dbUser = "root", dbPass = "",
+                url = "jdbc:mysql://localhost:3306/" + dbName;
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection(url, dbUser, dbPass);
@@ -83,15 +92,28 @@ public class CoffeeShop extends Application {
     protected void logoutUser() {
         this.identity[0] = "";
         this.identity[1] = "";
-        this.primaryStage.setScene(this.loginStage);
+        this.primaryStage.setScene(this.loginScene);
+        this.loginCtrl.setTfUsernameText("");
+        this.loginCtrl.setTPfPasswordText("");
+        this.loginCtrl.setCbToggleShowPasswordSelected(false);
     }
     protected void loginUser(String name, String pass) {
         this.identity[0] = name;
         this.identity[1] = pass;
         this.primaryStage.setScene(this.shopScene);
     }
-    protected void registerUser(String name, String pass, Connection con) {
-        String connectQuery = String.format("INSERT INTO `users` (`username`, `password`, `join_date`) VALUES ('%s', '%s', current_timestamp());", name, pass);
+    protected void registerUser(String name, String pass, Connection con) throws SQLException, InterruptedException {
+        String loginQuery = "SELECT * FROM users WHERE username = ?;";
+        PreparedStatement psLogin = con.prepareStatement(loginQuery);
+        psLogin.setString(1, name);
+        ResultSet rsLogin = psLogin.executeQuery();
+        if (rsLogin.next()) {
+            this.loginCtrl.setLWarningText("Username already exist");
+            return;
+        }
+        String connectQuery = String.format("INSERT INTO `users` " +
+                "(`username`, `password`, `join_date`) VALUES ('%s', '%s', current_timestamp());",
+                name, pass);
         int rowsAffected = 0;
         try {
            Statement statement = con.createStatement();
@@ -100,7 +122,6 @@ public class CoffeeShop extends Application {
             e.printStackTrace();
         }
         if (rowsAffected > 0) {
-            this.shopCtrl.setLWelcomeText("Welcome, " + name + "!");
             this.setPrimaryStageScene(this.shopScene);
             return;
         }
@@ -111,17 +132,39 @@ public class CoffeeShop extends Application {
     }
     @Override
     public void start(Stage stage) throws IOException {
+        // Stages and Scenes
         this.primaryStage = stage;
-        this.loginStage = new Scene(FXMLLoader.load(Objects.requireNonNull(getClass().getResource("login.fxml"))));
-        this.shopScene = new Scene(FXMLLoader.load(Objects.requireNonNull(getClass().getResource("shop.fxml"))));
         this.primaryStage.setTitle("Volistic Coffee Shop");
-        this.primaryStage.setScene(this.loginStage);
-        Image iLogo = new Image(Objects.requireNonNull(getClass().getResourceAsStream("images/logo.png")));
-        this.loginCtrl.setIvLogo(new ImageView(iLogo));
+        Image image = new Image(getClass().getResourceAsStream("images/logo.png"));
+        this.primaryStage.getIcons().add(image);
         this.primaryStage.setResizable(false);
+
+        // Login Stage
+        FXMLLoader fxmlLoaderLoginStage = new FXMLLoader();
+        fxmlLoaderLoginStage.setLocation(CoffeeShop.class.getResource("login.fxml"));
+        AnchorPane anchorPane = (AnchorPane) fxmlLoaderLoginStage.load();
+        this.loginScene = new Scene(anchorPane);
+
+        // Shop Stage
+        FXMLLoader fxmlLoaderShopStage = new FXMLLoader();
+        fxmlLoaderShopStage.setLocation(CoffeeShop.class.getResource("shop.fxml"));
+        anchorPane = (AnchorPane) fxmlLoaderShopStage.load();
+        this.shopScene = new Scene(anchorPane);
+
+        // Controllers
+        this.loginCtrl = fxmlLoaderLoginStage.getController();
+        this.loginCtrl.setCoffeeShop(this);
+        Image iLogo = new Image(getClass().getResourceAsStream("images/logo.png"));
+        this.loginCtrl.setIvLogo(new ImageView(iLogo));
+
+        this.shopCtrl = fxmlLoaderShopStage.getController();
+        this.shopCtrl.setCoffeeShop(this);
+
+        // Display
+        this.primaryStage.setScene(this.loginScene);
         this.primaryStage.show();
     }
     public static void main(String[] args) {
-        launch();
+        launch(args);
     }
 }
