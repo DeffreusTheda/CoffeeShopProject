@@ -22,68 +22,89 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 -->
 
-<?import javafx.scene.control.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.ColorAdjust?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.text.*?>
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
-            minWidth="-Infinity"
-            prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/21"
-            fx:controller="comsci.cs_coffeeshop.Controller">
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" style="-fx-background-color: #eee;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="comsci.cs_coffeeshop.LoginCtrl">
     <children>
-        <Label alignment="CENTER" contentDisplay="CENTER" layoutY="60.0" prefWidth="1000.0"
-               text="Please Sign In to Continue">
+        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="400.0" layoutY="60.0" prefWidth="600.0" text="LOGIN" textFill="#7e8efd">
             <font>
-                <Font name="Al Nile Bold" size="36.0"/>
+                <Font name="Serif Bold" size="36.0" />
             </font>
         </Label>
-        <Label layoutX="250.0" layoutY="180.0" text="Username:">
+        <Label layoutX="450.0" layoutY="180.0" text="Username" textFill="#7e8efd">
             <font>
-                <Font name="Al Nile" size="20.0"/>
+                <Font name="Serif Bold" size="24.0" />
             </font>
         </Label>
-        <Label layoutX="250.0" layoutY="300.0" text="Password:">
+        <Label layoutX="450.0" layoutY="300.0" text="Password" textFill="#7e8efd">
             <font>
-                <Font name="Al Nile" size="20.0"/>
+                <Font name="Serif Bold" size="24.0" />
             </font>
         </Label>
-        <TextField fx:id="tfUsername" layoutX="250.0" layoutY="220.0" prefHeight="50.0" prefWidth="500.0"
-                   promptText="Leave blank for anonymous login">
+        <TextField fx:id="tfUsername" layoutX="450.0" layoutY="220.0" prefHeight="50.0" prefWidth="500.0" promptText="Enter your username here">
             <font>
-                <Font size="20.0"/>
+                <Font name="Serif Regular" size="20.0" />
             </font>
         </TextField>
-        <Button layoutX="250.0" layoutY="480.0" mnemonicParsing="false" onAction="#signIn"
-                prefHeight="65.0" prefWidth="200.0" text="Sign In">
+        <Button layoutX="450.0" layoutY="415.0" mnemonicParsing="false" onAction="#signIn" style="-fx-background-color: #7e8efd;" text="Login" textFill="WHITE">
             <font>
-                <Font name="Al Nile Bold" size="26.0"/>
+                <Font name="Serif Bold" size="24.0" />
             </font>
         </Button>
-        <Button layoutX="550.0" layoutY="480.0" mnemonicParsing="false" onAction="#signUp"
-                prefHeight="65.0" prefWidth="200.0" text="Sign Up">
+        <Button layoutX="832.5" layoutY="415.0" mnemonicParsing="false" onAction="#signUp" style="-fx-background-color: #7e8efd;" text="Register" textFill="WHITE">
             <font>
-                <Font name="Al Nile Bold" size="26.0"/>
+                <Font name="Serif Bold" size="24.0" />
             </font>
         </Button>
-        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="550.0" layoutY="550.0" prefWidth="200.0"
-               text="Have no account? Register!"/>
-        <PasswordField fx:id="pfPassword" layoutX="250.0" layoutY="340.0" prefHeight="50.0" prefWidth="500.0"
-                       promptText="Leave blank for anonymous login">
+        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="822.0" layoutY="470.0" text="Have no account? Register!">
+         <font>
+            <Font name="Serif Regular" size="13.0" />
+         </font></Label>
+        <PasswordField fx:id="pfPassword" layoutX="450.0" layoutY="340.0" prefHeight="50.0" prefWidth="500.0" promptText="Enter your password here">
             <font>
-                <Font size="20.0"/>
+                <Font name="Serif Regular" size="20.0" />
             </font>
         </PasswordField>
-        <Label fx:id="lWarning" alignment="CENTER" layoutX="250.0" layoutY="420.0" prefWidth="500.0" textFill="#ab1c1c">
+        <Label fx:id="lWarning" alignment="CENTER" contentDisplay="CENTER" layoutX="400.0" layoutY="515.0" prefWidth="600.0" textFill="#ab1c1c">
             <font>
-                <Font size="20.0"/>
+                <Font name="Serif Regular" size="24.0" />
             </font>
         </Label>
-        <CheckBox fx:id="cbToggleShowPassword" layoutX="630.0" layoutY="310.0" mnemonicParsing="false"
-                  onAction="#toggleShowPassword" prefHeight="20.0" prefWidth="120.0" text="Show Password"/>
-        <TextField fx:id="tfPassword" layoutX="250.0" layoutY="340.0" prefHeight="50.0" prefWidth="500.0"
-                   promptText="Leave blank for anonymous login" visible="false">
+        <CheckBox fx:id="cbToggleShowPassword" layoutX="844.0" layoutY="312.5" mnemonicParsing="false" onAction="#toggleShowPassword" text="Show Password">
+         <font>
+            <Font name="Serif Italic" size="13.0" />
+         </font>
+         <effect>
+            <ColorAdjust contrast="0.2" />
+         </effect></CheckBox>
+        <TextField fx:id="tfPassword" disable="true" layoutX="450.0" layoutY="340.0" prefHeight="50.0" prefWidth="500.0" promptText="Enter your password here" visible="false">
             <font>
-                <Font size="20.0"/>
+                <Font name="Serif Regular" size="20.0" />
             </font>
         </TextField>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#7e8efd" height="600.0" stroke="BLACK" strokeType="INSIDE" width="400.0" />
+      <Separator layoutX="400.0" orientation="VERTICAL" prefHeight="600.0" />
+      <ImageView fx:id="ivLogo" fitHeight="200.0" fitWidth="200.0" layoutX="100.0" layoutY="150.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@images/logo.png" />
+         </image></ImageView>
+      <Label layoutX="100.0" layoutY="350.0" prefHeight="50.0" prefWidth="200.0" text="\@VxCoffeeShop">
+         <font>
+            <Font name="Serif Bold" size="26.0" />
+         </font>
+      </Label>
+      <ProgressBar fx:id="pbLogin" layoutX="600.0" layoutY="520.0" prefWidth="200.0" progress="0.0" visible="false" />
     </children>
 </AnchorPane>

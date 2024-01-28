@@ -11,6 +11,8 @@ module comsci.cs_coffeeshop {
     requires eu.hansolo.tilesfx;
     requires com.almasb.fxgl.all;
     requires java.sql;
+//    requires mysql.connector.j;
+    requires static lombok;
 
     opens comsci.cs_coffeeshop to javafx.fxml;
     exports comsci.cs_coffeeshop;
