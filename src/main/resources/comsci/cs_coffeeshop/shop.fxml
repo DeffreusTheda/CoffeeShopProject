@@ -127,10 +127,10 @@ SOFTWARE.
       </MenuBar>
       <TableView fx:id="tvCart" layoutY="150.0" prefHeight="325.0" prefWidth="250.0" AnchorPane.leftAnchor="25.0">
         <columns>
-          <TableColumn fx:id="itemName" prefWidth="-1.0" text="Name" />
-          <TableColumn fx:id="itemPrice" prefWidth="-1.0" text="Price" />
-            <TableColumn fx:id="itemQuantity" prefWidth="-1.0" text="QTY" />
-            <TableColumn fx:id="itemTotal" prefWidth="-1.0" text="Total" />
+          <TableColumn fx:id="tbItemName" prefWidth="-1.0" text="Name" />
+          <TableColumn fx:id="tbItemPrice" prefWidth="-1.0" text="Price" />
+            <TableColumn fx:id="tbItemQuantity" prefWidth="-1.0" text="QTY" />
+            <TableColumn fx:id="tbItemTotal" prefWidth="-1.0" text="Total" />
         </columns>
          <columnResizePolicy>
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />

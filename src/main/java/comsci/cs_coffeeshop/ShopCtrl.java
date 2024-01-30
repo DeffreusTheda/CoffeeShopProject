@@ -22,8 +22,6 @@
 
 package comsci.cs_coffeeshop;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -36,6 +34,10 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Optional;
@@ -44,11 +46,17 @@ import lombok.Setter;
 
 public class ShopCtrl {
     @Setter private CoffeeShop coffeeShop;
-    @Setter @Getter private class Item {
-        private String name;
-        private double price, total;
-        private int quantity;
-
+    private Connection con;
+    private class Item {
+        @Setter @Getter private String name;
+        @Setter @Getter private double price, total;
+        @Setter @Getter private int quantity;
+        public Item() {
+            this.name = "";
+            this.price = 0.0f;
+            this.total = 0.0f;
+            this.quantity = 0;
+        }
         public Item(String testname, String testprice, String testQTY, String testtotal) {
             this.name = testname;
             this.price = Double.parseDouble(testprice);
@@ -56,85 +64,202 @@ public class ShopCtrl {
             this.total = Double.parseDouble(testtotal);
         }
     }
+
     // CAFE MENU
     @FXML private Label lWelcome;
-    protected void setLWelcomeText(String message) {
-        this.lWelcome.setText(message);
-    }
 
     /* Editable Start Here */
-    // Make sure the FlowPane is injected by the corresponding .fxml file (shop.fxml)
+    // FlowPanes for Item Categories
+    // Make sure the FlowPane is injected in shop.fxml
     @FXML private FlowPane fpFoods, fpDrinks;
     // Edit the initial capacity accordingly when add/removing category
-    @FXML private final ArrayList<FlowPane> fps = new ArrayList<>(2);
+    private final ArrayList<FlowPane> fps = new ArrayList<>();
     /* Editable End Here */
 
-    // METADATA
-    @FXML private TableView<Item> tvCart;
-    @FXML private TableColumn<Item, String> itemName, itemPrice, itemTotal, itemQuantity;
-    private void ShopCtrl() {
-        this.itemName.setCellValueFactory(new PropertyValueFactory<Item, String>("name"));
-        this.itemPrice.setCellValueFactory(new PropertyValueFactory<Item, String>("price"));
-        this.itemQuantity.setCellValueFactory(new PropertyValueFactory<Item, String >("quantity"));
-        this.itemTotal.setCellValueFactory(new PropertyValueFactory<Item, String>("total"));
+    // Shopping Cart Table View
+    @FXML private TableView tvCart = new TableView<Item>();
+    @FXML private TableColumn tbItemName, tbItemPrice, tbItemTotal, tbItemQuantity;
+    private double sumOfPurchase = 0;
+    @FXML private void initialize() throws SQLException {
+        // Initialize FLowPanes
+        this.fps.add(fpFoods);
+        this.fps.add(fpDrinks);
+
+        // Shopping Cart Table View
+        this.tvCart.setEditable(false);
+
+        // Initializing the TableColumns
+        this.tbItemName = new TableColumn<Item, String>("Name");
+        this.tbItemPrice = new TableColumn<Item, Double>("Price");
+        this.tbItemQuantity = new TableColumn<Item, Integer>("QTY");
+        this.tbItemTotal = new TableColumn<Item, Double>("Total");
+
+        // Setting Table Columns Cell Factory
+        this.tbItemName.setCellValueFactory(new PropertyValueFactory<Item, String>("name"));
+        this.tbItemPrice.setCellValueFactory(new PropertyValueFactory<Item, String>("price"));
+        this.tbItemQuantity.setCellValueFactory(new PropertyValueFactory<Item, String>("quantity"));
+        this.tbItemTotal.setCellValueFactory(new PropertyValueFactory<Item, String>("total"));
         this.tvCart.setItems(this.tvCart.getItems());
     }
-    private double sumOfPurchase = 0;
-    @FXML private void initialize(CoffeeShop coffeeShop) {
-        this.fps.add(this.fpFoods); this.fps.add(this.fpDrinks);
-        for (int i = 0; i < this.fps.size(); ++i) {
-            this.populateItems(this.fps.get(i), this.coffeeShop.getCategories()[i]);
+    protected boolean populateItems() throws SQLException {
+        // Fetch Items
+        con = this.coffeeShop.connectToDB();
+        if (con == null) {
+            this.coffeeShop.showAlert("Sorry for the inconvenience",
+                    "Failed to connect to product database",
+                    "Please try again later\nPossible causes:\n- Database server is down" +
+                            "\n- Internet connection problem"
+            );
+            return false;
         }
-    }
-    private ObservableList<Item> getItems() {
-        ObservableList<Item> items = FXCollections.observableArrayList();
-        items.add(new Item("testname", "testprice", "testQTY", "testtotal"));
 
-        return items;
-    }
-    private void populateItems(FlowPane fp, String[][] items) {
-        for (String[] item : items) {
-            // vbox for an item
-            VBox vbItem = new VBox();
-            vbItem.setPrefHeight(200.0);
-            vbItem.setPrefWidth(150.0);
-            // item image [0]
-            ImageView ivItem = new ImageView();
-            try { ivItem.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(item[2])))); }
-            catch(NullPointerException e) { System.out.println("NullPointerException"); }
-            ivItem.setFitHeight(150.0f);
-            ivItem.setFitWidth(150.0f);
-            ivItem.setPickOnBounds(true);
-            ivItem.setPreserveRatio(true);
-            Insets iImg = new Insets(0f, 12f, 0f, 12f);
-            VBox.setMargin(vbItem, iImg);
-            // item name label [1]
-            Label lItem_name = new Label(item[0]);
-            lItem_name.setAlignment(Pos.CENTER);
-            lItem_name.setPrefWidth(150.0f);
-            lItem_name.setFont(new Font("Serif Regular", 22.0f));
-            lItem_name.setTextFill(new Color(126/255f, 142/255f, 253/255f, 1f));
-            // item price label [2]
-            Label lItem_price = new Label(String.format("Rp%,.2f", Double.parseDouble(item[1])));
-            lItem_price.setAlignment(Pos.CENTER);
-            lItem_price.setPrefWidth(150.0f);
-            lItem_price.setFont(new Font("Serif Regular", 18.0f));
-            // spinner [3]
-            Spinner<Integer> sFood = new Spinner<>();
-            sFood.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 32767));
-            sFood.getEditor().setText("");
-            sFood.setPromptText("0");
-            sFood.setPrefHeight(30.0f);
-            sFood.setEditable(true);
-            // finally
-            vbItem.getChildren().addAll(ivItem, lItem_name, lItem_price, sFood);
-            fp.getChildren().add(vbItem);
+        // Get Category Count
+        PreparedStatement psCategoryCount = con.prepareStatement("SELECT COUNT(DISTINCT category) AS cnt FROM items");
+        ResultSet rsCategoryCount = psCategoryCount.executeQuery();
+        short categoryCount = -1;
+        rsCategoryCount.next();
+        categoryCount = (short) rsCategoryCount.getInt("cnt");
+        if (categoryCount == -1) {
+            this.coffeeShop.showAlert(
+                    "Alert",
+                    "Database Error",
+                    "Please immediately contact 'deffreus' on Discord"
+            );
+            return false;
         }
+
+        // Get Item Rows
+        PreparedStatement psGetItems = con.prepareStatement("SELECT  * FROM items");
+        ResultSet rsGetItems = psGetItems.executeQuery();
+
+        // Set Up FLow Panes
+        for (int i = 0; i < categoryCount; ++i) {
+            FlowPane fp = new FlowPane();
+            fp.setHgap(19.0f);
+            fp.setVgap(10.0f);
+            fp.setPrefHeight(200.0f);
+            // Populate Items
+            while (rsGetItems.next()) {
+                // VBox for an Item
+                VBox vbItem = new VBox();
+                vbItem.setPrefHeight(200.0);
+                vbItem.setPrefWidth(150.0);
+                // Item Image [0]
+                ImageView ivItem = new ImageView();
+                try {
+                    String imagePath = "images/" + rsGetItems.getString("name") + ".png";
+                    ivItem.setImage(new Image(getClass().getResourceAsStream(imagePath)));
+                } catch(NullPointerException e) {
+                    System.out.println("NullPointerException");
+                }
+                ivItem.setFitHeight(150.0f);
+                ivItem.setFitWidth(150.0f);
+                ivItem.setPickOnBounds(true);
+                ivItem.setPreserveRatio(true);
+                Insets iImg = new Insets(0f, 12f, 0f, 12f);
+                VBox.setMargin(vbItem, iImg);
+
+                // ItemName Label [1]
+                Label lItem_name = new Label(rsGetItems.getString("name"));
+                lItem_name.setAlignment(Pos.CENTER);
+                lItem_name.setPrefWidth(150.0f);
+                lItem_name.setFont(new Font("Serif Regular", 22.0f));
+                lItem_name.setTextFill(new Color(126/255f, 142/255f, 253/255f, 1f));
+
+                // ItemPrice Label [2]
+                Label lItem_price = new Label(String.format("Rp%,.2f", (double) rsGetItems.getInt("price")));
+                lItem_price.setAlignment(Pos.CENTER);
+                lItem_price.setPrefWidth(150.0f);
+                lItem_price.setFont(new Font("Serif Regular", 18.0f));
+
+                /* // spinner [3]
+                Spinner<Integer> sFood = new Spinner<>();
+                sFood.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 32767));
+                sFood.getEditor().setText("");
+                sFood.setPromptText("0");
+                sFood.setPrefHeight(26.0f);
+                sFood.setEditable(true);*/
+
+                // Item Quantity TextField and Buttons FLowPane [3]
+                FlowPane fpValue = new FlowPane();
+                fpValue.setPrefHeight(26.0f);
+                fpValue.setPrefWidth(95.0f);
+
+                // Value TextField [3][0]
+                TextField tfValue =  new TextField();
+                tfValue.setPromptText("0");
+                tfValue.setPrefHeight(26.0f);
+                tfValue.setPrefWidth(95.0f);
+                tfValue.textProperty().addListener((observable, oldValue, newValue) -> {
+                    if (newValue.isEmpty()) {
+                        return;
+                    }
+                    try {
+                        int value = Integer.parseInt(newValue);
+                        if (value < 0) {
+                            NumberFormatException e = new NumberFormatException();
+                            throw e;
+                        }
+                        updateCart();
+                    } catch (NumberFormatException e) {
+                        coffeeShop.showAlert("Exception Found",
+                                "", /* Empty for simplicity */
+                                "Please input the number correctly"
+                        );
+                        tfValue.setText("");
+                    }
+                });
+                fpValue.getChildren().add(tfValue);
+
+                // Increment Button [3][1]
+                Button bIncrement = new Button("↑");
+                bIncrement.setMnemonicParsing(false);
+                bIncrement.setPrefHeight(26.0f);
+                bIncrement.setPrefWidth(27.5f);
+                bIncrement.setTextOverrun(OverrunStyle.CLIP);
+                bIncrement.setOnAction(event -> {
+                    if (tfValue.getText().isEmpty()) {
+                        tfValue.setText("0");
+                    }
+                    tfValue.setText(String.valueOf(Integer.parseInt(tfValue.getText()) + 1));
+                });
+                fpValue.getChildren().add(bIncrement);
+
+                // Decrement Button [3][2]
+                Button bDecrement = new Button("↓");
+                bDecrement.setMnemonicParsing(false);
+                bDecrement.setPrefHeight(26.0f);
+                bDecrement.setPrefWidth(27.5f);
+                bDecrement.setTextOverrun(OverrunStyle.CLIP);
+                bDecrement.setOnAction(event -> {
+                    if (tfValue.getText().isEmpty()) {
+                        return;
+                    }
+                    if (Integer.parseInt(tfValue.getText()) >= 1) {
+                        tfValue.setText(String.valueOf(Integer.parseInt(tfValue.getText()) - 1));
+                    }
+                    if (Integer.parseInt(tfValue.getText()) == 0) {
+                        tfValue.setText("");
+                    }
+                });
+                fpValue.getChildren().add(bDecrement);
+
+                // Finally
+                vbItem.getChildren().addAll(ivItem, lItem_name, lItem_price, fpValue);
+                fp.getChildren().add(vbItem);
+            }
+        }
+        return true;
     }
     @FXML private void reset() {
-        for (FlowPane fp : this.fps) for (Node nodes : fp.getChildren()) {
-            ((Spinner<Integer>) ((VBox) nodes).getChildren().get(3)).getEditor().setText("");
+        for (FlowPane fp : this.fps) {
+            for (Node nodes : fp.getChildren()) {
+                ((Spinner<Integer>) ((VBox) nodes).getChildren().get(3)).getEditor().setText("");
+            }
         }
+    }
+    @FXML private void updateCart() {
+
     }
     @FXML private void purchase() {
         String purchases = "";
@@ -143,12 +268,15 @@ public class ShopCtrl {
             int item_count = ((Spinner<Integer>) vbItem.getChildren().get(3)).getValue();
             if (item_count == 0) continue;
             String item_name = ((Label) vbItem.getChildren().get(1)).getText(),
-            item_price = ((Label) vbItem.getChildren().get(2)).getText().replace("Rp", "").replace(",", "");
+            item_price = ((Label) vbItem.getChildren().get(2)).getText()
+                    .replace("Rp", "")
+                    .replace(",", "");
             double items_price = Double.parseDouble(item_price) * item_count;
             this.sumOfPurchase += items_price;
             purchases = purchases.concat(String.format("[%d] %s : Rp%,.2f\n", item_count, item_name, items_price));
         }
         purchases = purchases.concat(String.format("\nTotal : Rp%,.2f\n", this.sumOfPurchase));
+
         // Purchase Receipt
         Alert receipt = new Alert(Alert.AlertType.INFORMATION);
         receipt.setTitle("Purchase Receipt");
@@ -160,6 +288,7 @@ public class ShopCtrl {
         ivReceipt.setFitHeight(50.0f);
         receipt.setGraphic(ivReceipt);
         receipt.showAndWait();
+
         // Purchase again confirmation
         Alert again = new Alert(Alert.AlertType.CONFIRMATION);
         again.setTitle("Confirmation Dialog");

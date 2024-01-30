@@ -23,6 +23,7 @@
 package comsci.cs_coffeeshop;
 
 import javafx.application.Application;
+import javafx.beans.NamedArg;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -62,18 +63,20 @@ public class CoffeeShop extends Application {
     protected String[] identity = {"", ""};
     private Stage primaryStage;
     private Scene loginScene, shopScene;
-    protected void showConnectionAlert() {
+    protected void showAlert(@NamedArg("title") String title, @NamedArg("header") String header, @NamedArg("content") String content) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setResizable(false);
-        alert.setTitle("Sorry for the inconvenience");
-        alert.setHeaderText("Failed to connect to product database");
-        alert.setContentText("Please try again later\nPossible causes:" +
-                "\n- Database server is down\n- Internet connection problem");
+
+        alert.setTitle(title);
+        alert.setHeaderText(header);
+        alert.setContentText(content);
+
         Image iLogo = new Image(getClass().getResourceAsStream("images/logo.png"));
         ImageView ivLogo = new ImageView(iLogo);
         ivLogo.setFitHeight(50.0f);
         ivLogo.setFitWidth(50.0f);
         alert.setGraphic(ivLogo);
+
         alert.showAndWait();
     }
     protected Connection connectToDB() {
@@ -97,12 +100,12 @@ public class CoffeeShop extends Application {
         this.loginCtrl.setTPfPasswordText("");
         this.loginCtrl.setCbToggleShowPasswordSelected(false);
     }
-    protected void loginUser(String name, String pass) {
+    protected void loginUser(@NamedArg("name") String name, @NamedArg("pass") String pass) {
         this.identity[0] = name;
         this.identity[1] = pass;
-        this.primaryStage.setScene(this.shopScene);
+        this.setPrimaryStageScene(this.shopScene);
     }
-    protected void registerUser(String name, String pass, Connection con) throws SQLException, InterruptedException {
+    protected void registerUser(@NamedArg("name") String name, @NamedArg("pass") String pass, @NamedArg("connection") Connection con) throws SQLException, InterruptedException {
         String loginQuery = "SELECT * FROM users WHERE username = ?;";
         PreparedStatement psLogin = con.prepareStatement(loginQuery);
         psLogin.setString(1, name);
@@ -127,38 +130,44 @@ public class CoffeeShop extends Application {
         }
         this.loginCtrl.setLWarningText("Connection Error");
     }
-    private void setPrimaryStageScene(Scene scene) {
+    private void setPrimaryStageScene(@NamedArg("scene") Scene scene) {
         this.primaryStage.setScene(scene);
     }
     @Override
-    public void start(Stage stage) throws IOException {
-        // Stages and Scenes
+    public void start(Stage stage) throws Exception {
+        // Primary Stage Scene
         this.primaryStage = stage;
         this.primaryStage.setTitle("Volistic Coffee Shop");
         Image image = new Image(getClass().getResourceAsStream("images/logo.png"));
         this.primaryStage.getIcons().add(image);
         this.primaryStage.setResizable(false);
 
-        // Login Stage
+        // Login Stage Scene
         FXMLLoader fxmlLoaderLoginStage = new FXMLLoader();
         fxmlLoaderLoginStage.setLocation(CoffeeShop.class.getResource("login.fxml"));
         AnchorPane anchorPane = (AnchorPane) fxmlLoaderLoginStage.load();
         this.loginScene = new Scene(anchorPane);
 
-        // Shop Stage
+        // Shop Stage Scene
         FXMLLoader fxmlLoaderShopStage = new FXMLLoader();
         fxmlLoaderShopStage.setLocation(CoffeeShop.class.getResource("shop.fxml"));
         anchorPane = (AnchorPane) fxmlLoaderShopStage.load();
         this.shopScene = new Scene(anchorPane);
 
-        // Controllers
+        // Login Controller
         this.loginCtrl = fxmlLoaderLoginStage.getController();
         this.loginCtrl.setCoffeeShop(this);
         Image iLogo = new Image(getClass().getResourceAsStream("images/logo.png"));
         this.loginCtrl.setIvLogo(new ImageView(iLogo));
 
+        // Shop Controller
         this.shopCtrl = fxmlLoaderShopStage.getController();
         this.shopCtrl.setCoffeeShop(this);
+        if (!this.shopCtrl.populateItems()) {
+            System.out.println("Populate Item Error");
+            Exception e = new Exception();
+            throw e;
+        }
 
         // Display
         this.primaryStage.setScene(this.loginScene);

@@ -61,7 +61,11 @@ public class LoginCtrl {
         setLWarningText("");
         Connection con = this.coffeeShop.connectToDB();
         if (con == null) {
-            this.coffeeShop.showConnectionAlert();
+            this.coffeeShop.showAlert("Sorry for the inconvenience",
+                    "Failed to connect to product database",
+                    "Please try again later\nPossible causes:\n- Database server is down" +
+                            "\n- Internet connection problem"
+            );
             return;
         }
         String loginQuery = "SELECT * FROM users WHERE username = ? AND password = ?;";
