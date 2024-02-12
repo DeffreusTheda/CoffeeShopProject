@@ -1,24 +1,21 @@
-/********************************************************************************
+/***************************************************************************************************
  * Copyright (c) 2024 Deffreus Theda
  *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software
+ * and associated documentation files (the "Software"), to deal in the Software without
+ * restriction, including without limitation the rights to use, copy, modify, merge, publish,
+ * distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following conditions:
  *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
+ * The above copyright notice and this permission notice shall be included in all copies or
+ * substantial portions of the Software.
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
- *******************************************************************************/
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING
+ * BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+ * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ **************************************************************************************************/
 
 package comsci.cs_coffeeshop;
 
@@ -33,7 +30,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import lombok.Getter;
 import java.sql.*;
-import java.util.Arrays;
 
 public class CoffeeShop extends Application {
   private ShopCtrl shopCtrl;
@@ -66,20 +62,30 @@ public class CoffeeShop extends Application {
   @Getter private String[] identity = {"", ""};
   private Stage primaryStage;
   private Scene loginScene, shopScene;
-  protected void showAlert(@NamedArg("title") String title, @NamedArg("header") String header, @NamedArg("content") String content) {
+  protected void showAlert() {
     Alert alert = new Alert(Alert.AlertType.ERROR);
     alert.setResizable(false);
-
-    alert.setTitle(title);
-    alert.setHeaderText(header);
-    alert.setContentText(content);
-
+    alert.setTitle("Error");
+    alert.setHeaderText("Unexpected Behavior.");
+    alert.setContentText("Submit an issue on https://github.com/DeffruesTheda/CS_CoffeeShop");
     Image iLogo = new Image(getClass().getResourceAsStream("images/logo.png"));
     ImageView ivLogo = new ImageView(iLogo);
     ivLogo.setFitHeight(50.0f);
     ivLogo.setFitWidth(50.0f);
     alert.setGraphic(ivLogo);
-
+    alert.showAndWait();
+  }
+  protected void showAlert(@NamedArg("alertType") Alert.AlertType alertType, @NamedArg("title") String title, @NamedArg("header") String header, @NamedArg("content") String content) {
+    Alert alert = new Alert(Alert.AlertType.ERROR);
+    alert.setResizable(false);
+    alert.setTitle(title);
+    alert.setHeaderText(header);
+    alert.setContentText(content);
+    Image iLogo = new Image(getClass().getResourceAsStream("images/logo.png"));
+    ImageView ivLogo = new ImageView(iLogo);
+    ivLogo.setFitHeight(50.0f);
+    ivLogo.setFitWidth(50.0f);
+    alert.setGraphic(ivLogo);
     alert.showAndWait();
   }
   protected Connection connectToDB() {
@@ -90,9 +96,7 @@ public class CoffeeShop extends Application {
       Class.forName("com.mysql.cj.jdbc.Driver");
       con = DriverManager.getConnection(url, dbUser, dbPass);
       return con;
-    } catch (Exception e) {
-      System.out.println("Connecting to Database Error");
-    }
+    } catch (Exception e) { System.out.println("Connecting to Database Error"); }
     return null;
   }
   protected void logoutUser() {
@@ -124,9 +128,7 @@ public class CoffeeShop extends Application {
     try {
        Statement statement = con.createStatement();
        rowsAffected = statement.executeUpdate(connectQuery);
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
+    } catch (Exception e) { e.printStackTrace(); }
     if (rowsAffected > 0) {
       this.setPrimaryStageScene(this.shopScene);
       return;
@@ -177,22 +179,28 @@ public class CoffeeShop extends Application {
     this.primaryStage.show();
   }
   protected String toTitleCase(@NamedArg("lowercase") String lowercase) {
-    char[] tmp = lowercase.toCharArray();
-    boolean first = true; // determine if next char is first letter of a word
-    for (int i = 0; i < lowercase.length(); ++i) {
-      if (!first && (tmp[i] == '_' || tmp[i] == ' ')) {
-        tmp[i] = ' ';
-        first = true; // first letter after whitespace
+    char[] charArray = lowercase.toCharArray();
+    boolean firstLetterOfAWord = true; // determine if next char is first letter of a word
+    boolean preLetter = true;
+    for (int index = 0; index < lowercase.length(); ++index) {
+      // do not remove '_' before any letter
+      if (preLetter && charArray[index] == '_')
+        continue;
+      else
+        preLetter = false;
+      if (!firstLetterOfAWord && (charArray[index] == '_' || charArray[index] == ' ')) {
+        charArray[index] = ' ';
+        firstLetterOfAWord = true; // first letter after whitespace
         continue;
       }
-      if (first) { // first letter in a word
-        first = false; // for next char
-      }
-      if (tmp[i] >= 97 && tmp[i] < 128) { // if lowercase
-        tmp[i] -= 32; // set to uppercase
-      }
+      if (firstLetterOfAWord && charArray[index] >= 97 && charArray[index] < 128) // if lowercase
+        charArray[index] -= 32; // set to uppercase
+      firstLetterOfAWord = false;
     }
-    return Arrays.toString(tmp);
+    StringBuilder res = new StringBuilder();
+    for (char c : charArray)
+      res.append(c);
+    return res.toString();
   }
   public static void main(String[] args) {
     launch(args);
