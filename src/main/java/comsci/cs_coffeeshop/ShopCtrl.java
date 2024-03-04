@@ -192,9 +192,7 @@ public class ShopCtrl {
         if (tfQTY.getText().isEmpty())
           tfQTY.setText("0");
         boolean equalToStock = false;
-        try {
-          equalToStock = Integer.parseInt(tfQTY.getText()) == rsGetItems.getInt("stock");
-        } catch (Exception e) { this.coffeeShop.showAlert(); }
+        double dStock = rsGetItems.getDouble("stock");
         if (equalToStock)
           this.coffeeShop.showAlert(
               Alert.AlertType.INFORMATION,
@@ -210,9 +208,11 @@ public class ShopCtrl {
       Button bDecrease = new Button("↓");
       bDecrease.setMnemonicParsing(false);
       bDecrease.setOnAction(event -> {
-        if (bDecrease.getText().isEmpty())
+        if (tfQTY.getText().isEmpty())
           return;
-        bDecrease.setText(String.valueOf(Integer.parseInt(bDecrease.getText()) - 1));
+        tfQTY.setText(String.valueOf(Integer.parseInt(tfQTY.getText()) - 1));
+        if (tfQTY.getText().equals("0"))
+          tfQTY.setText("");
       });
       fpItem.getChildren().add(bDecrease);
 
